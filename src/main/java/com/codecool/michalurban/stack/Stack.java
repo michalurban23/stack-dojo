@@ -10,6 +10,9 @@ public class Stack {
 
     public Stack(int size) {
 
+        if (size < 0) {
+            throw new IllegalArgumentException("Argument cant be negative");
+        }
         this.data = new Object[size];
         this.elements = 0;
     }
@@ -19,7 +22,7 @@ public class Stack {
         if (elements == data.length) {
             throw new StackOverflowException("Stack is full.");
         } else {
-            // TODO
+            data[elements++] = o;
         }
     }
 
@@ -28,13 +31,13 @@ public class Stack {
         if (elements == 0) {
             throw new StackUnderflowException("Stack is empty.");
         } else {
-            return null;// TODO
+            return data[--elements];
         }
     }
 
     public Object peek() {
 
-        return null; // TODO
+        return data[elements-1];
     }
 
     public int size() {
@@ -44,7 +47,7 @@ public class Stack {
 
     public int getAvailableSpace() {
 
-        return 0; // TODO
+        return this.size() - elements;
     }
 
 }
