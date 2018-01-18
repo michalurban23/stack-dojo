@@ -42,14 +42,6 @@ class StackTest {
     }
 
     @Test
-    void testPushOnEmptyStack() {
-
-        stack.push(new Object());
-
-        assertEquals(1, stack.size());
-    }
-
-    @Test
     void testPushOnFullStack() {
 
         for (int i = 0; i < stack.size(); i++) {
@@ -77,20 +69,81 @@ class StackTest {
     }
 
     @Test
-    void testPopOnFullStack() {
+    void testPeekReturnsSameObjectAsPopIfExecutedBefore() {
+
+        fillWithSomeData();
+
+        Object peekObj = stack.peek();
+        Object popObj = stack.pop();
+
+        assertEquals(peekObj, popObj);
+    }
+
+    @Test
+    void testPeekReturnsDifferentObjectThanPopIfExecutedAfter() {
+
+        fillWithSomeData();
+
+        Object popObj = stack.pop();
+        Object peekObj = stack.peek();
+
+        assertNotEquals(peekObj, popObj);
+    }
+
+    @Test
+    void testPeekNotChangingSize() {
+
+        fillWithSomeData();
+
+        int sizeBefore = stack.size();
+        stack.peek();
+
+        assertEquals(sizeBefore, stack.size());
+    }
+
+    @Test
+    void testSpaceAvailableOnEmptyStack() {
+
+        assertEquals(stack.size(), stack.getAvailableSpace());
+    }
+
+    @Test
+    void testSpaceAvailable() {
+
+        fillWithSomeData();
+        int dataSize = 6;
+
+        assertEquals(stack.size() - dataSize, stack.getAvailableSpace());
+    }
+
+    @Test
+    void testSpaceAvailableOnFullStack() {
 
         for (int i = 0; i < stack.size(); i++) {
             stack.push(new Object());
         }
-        stack.pop();
 
-        assertEquals(9, stack.size());
+        assertEquals(0, stack.getAvailableSpace());
     }
 
     @Test
-    void test() {
+    void testPushChangesAvailableSpace() {
 
+        fillWithSomeData();
+        int spaceBefore = stack.getAvailableSpace();
+        stack.push(new Object());
 
+        assertEquals(spaceBefore - 1, stack.getAvailableSpace());
+    }
+
+    @Test
+    void testPopChangesAvailableSpace() {
+
+        fillWithSomeData();
+        int spaceBefore = stack.getAvailableSpace();
+        stack.pop();
+
+        assertEquals(spaceBefore + 1, stack.getAvailableSpace());
     }
 
 }
